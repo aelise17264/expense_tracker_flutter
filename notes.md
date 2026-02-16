@@ -5,3 +5,5 @@ Enum - predefined allowed values, create a fixed set of allowd values when creat
 column might not be best widget if we have an unknown length of list items, scrollable column is an option but creating all of the unseen list items is redundant and costs a lot of performance. 
 
 ListView.builder - tells flutter to create a scrollable list & only create the list items when it is about to become visibile, we pass a function to the itemBuilder & it returns a widget, itemCount denotes how many list items will be created (how many times the function will be called)
+
+Getters - computed properties ie properties that are dynamically delivered based on other class properties
