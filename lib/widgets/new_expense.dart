@@ -18,6 +18,7 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _priceInput = TextEditingController();
   DateTime? _selectedDate;
+  Category _selectedCategory = Category.fun;
 
   @override
   void dispose() {
@@ -104,7 +105,27 @@ class _NewExpenseState extends State<NewExpense> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(width: 8),
+              DropdownButton(
+                value: _selectedCategory,
+                items: Category.values
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category.name.toUpperCase()),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    if(value == null){
+                      return;
+                    }else{
+                      _selectedCategory = value;
+                    }
+                  });
+                },
+              ),
+              Spacer(),
               ElevatedButton.icon(
                 onPressed: () {},
                 onHover: (value) {
@@ -117,13 +138,13 @@ class _NewExpenseState extends State<NewExpense> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isSaveHovering
                       ? Colors.deepPurple
-                      : Colors.grey,
+                      : Colors.white,
                   foregroundColor: _isSaveHovering
                       ? Colors.white
                       : Colors.deepPurple,
                 ),
               ),
-              // ),
+              SizedBox(width: 10,),
               ElevatedButton.icon(
                 onPressed: () {
                   Navigator.pop(context);
@@ -138,7 +159,7 @@ class _NewExpenseState extends State<NewExpense> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isHovering
                       ? Colors.deepPurple
-                      : Colors.grey,
+                      : Colors.white,
                   foregroundColor: _isHovering
                       ? Colors.white
                       : Colors.deepPurple,
