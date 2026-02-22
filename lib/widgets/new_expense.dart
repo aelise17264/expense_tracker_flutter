@@ -25,9 +25,12 @@ class _NewExpenseState extends State<NewExpense> {
   // void _saveTitleInput(String inputValue) {
   //   _expenseTitle = inputValue;
   // }
+  bool _isHovering = false;
+  bool _isSaveHovering = false;
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsetsGeometry.all(16),
       child: Column(
@@ -43,15 +46,6 @@ class _NewExpenseState extends State<NewExpense> {
           SizedBox(height: 10),
           Row(
             children: [
-              // Expanded(
-              //   flex: 1,
-              //   child: ElevatedButton(
-              //     onPressed: () {
-              //       print(_titleController.text);
-              //     },
-              //     child: const Text('Save Expense'),
-              //   ),
-              // ),
               Expanded(
                 flex: 1,
                 child: TextField(
@@ -61,16 +55,55 @@ class _NewExpenseState extends State<NewExpense> {
                     prefixText: '\$ ',
                   ),
                   controller: _priceInput,
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d+\.?\d{0,2}'),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
           SizedBox(height: 10),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.close),
-            label: const Text('Cancel'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: 8,),
+              ElevatedButton.icon(
+                  onPressed: () {},
+                  onHover: (value){
+                    setState(() {
+                      _isSaveHovering = value;
+                    });
+                  },
+                  icon: const Icon(Icons.check),
+                  label: const Text('Save'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _isSaveHovering ? Colors.deepPurple : Colors.grey,
+                    foregroundColor: _isSaveHovering ?  Colors.white : Colors.deepPurple
+                  ),
+                ),
+              // ),
+            ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  onHover: (value){
+                    setState(() {
+                      _isHovering = value;
+                    });
+                  },
+                  icon: const Icon(Icons.close),
+                  label: const Text('Cancel'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _isHovering ? Colors.deepPurple : Colors.grey,
+                    foregroundColor: _isHovering ?  Colors.white : Colors.deepPurple
+                  ),
+                ),
+              // ),
+              SizedBox(width: 8,),
+              
+            ],
           ),
         ],
       ),
