@@ -13,3 +13,8 @@ column might not be best widget if we have an unknown length of list items, scro
 ### Context 
 - meta data collection managed by flutter that belongs to a specific widget related to the widget (each widget will have its own) & its position in the overall UI
 - when you're in a class that extends state flutter automatically adds context property that is provided by the state parent class
+
+### Futures
+- data types
+- object that wrap a value that we don't have yet but we will later
+- use async/await with these functions/values
