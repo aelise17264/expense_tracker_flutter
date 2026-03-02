@@ -60,18 +60,31 @@ class _NewExpenseState extends State<NewExpense> {
       // throw ErrorDescription(
       //   "Input Error: Check your expense title, date and amount. Something isn't right.",
       // );
-      showDialog(context: context, builder: (ctx) => AlertDialog(
-        title: Text('Input Error'),
-        content: Text('Check your expense title, date and amount.'),
-        actions: [
-          TextButton(onPressed: (){
-            Navigator.pop(ctx);
-          }, child: const Text('Got it!'))
-        ],
-      ));
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Input Error'),
+          content: Text('Check your expense title, date and amount.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('Got it!'),
+            ),
+          ],
+        ),
+      );
       return;
     }
-    widget.onAddExpense(Expense(title: _titleController.text, amount: enteredAmount, expenseDate: _selectedDate!, category: _selectedCategory));
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        expenseDate: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
     Navigator.pop(context);
   }
 

@@ -1,3 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:math';
+
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/expenses_list/expense_list.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
@@ -28,6 +32,9 @@ class _ExpensesState extends State<Expenses> {
       category: Category.work,
     ),
   ];
+
+  // final List<Expense> _ExpenseList = [];
+
   void _openAddExpenseModal() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -36,14 +43,46 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
-  void _addNewExpense(Expense expense){
+  void _addNewExpense(Expense expense) {
     setState(() {
       _ExpenseList.add(expense);
     });
   }
 
+  void _deleteExpense(Expense expense) {
+    final expenseIndex = _ExpenseList.indexOf(expense);
+    setState(() {
+      _ExpenseList.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Expense deleted."),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _ExpenseList.insert(expenseIndex, expense);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = const Center(
+      child: Text("Start adding your expenses!"),
+    );
+
+    if (_ExpenseList.isNotEmpty) {
+      mainContent = ExpenseList(
+        expenses: _ExpenseList,
+        onRemove: _deleteExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Expense Tracker Flutter'),
@@ -60,7 +99,7 @@ class _ExpensesState extends State<Expenses> {
         child: Column(
           children: [
             Text('The Chart'),
-            Expanded(child: ExpenseList(expenses: _ExpenseList)),
+            Expanded(child: mainContent),
           ],
         ),
       ),
