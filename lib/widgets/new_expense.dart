@@ -48,6 +48,29 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
+  void _submitData() {
+    final enteredAmount = double.tryParse(_priceInput.text);
+    final invalidAmount = enteredAmount == null || enteredAmount <= 0;
+
+    if (_titleController.text.trim().isEmpty ||
+        invalidAmount ||
+        _selectedDate == null) {
+      // throw ErrorDescription(
+      //   "Input Error: Check your expense title, date and amount. Something isn't right.",
+      // );
+      showDialog(context: context, builder: (ctx) => AlertDialog(
+        title: Text('Input Error'),
+        content: Text('Check your expense title, date and amount.'),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.pop(ctx);
+          }, child: const Text('Got it!'))
+        ],
+      ));
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -117,9 +140,9 @@ class _NewExpenseState extends State<NewExpense> {
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    if(value == null){
+                    if (value == null) {
                       return;
-                    }else{
+                    } else {
                       _selectedCategory = value;
                     }
                   });
@@ -127,7 +150,9 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               Spacer(),
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  _submitData();
+                },
                 onHover: (value) {
                   setState(() {
                     _isSaveHovering = value;
@@ -144,7 +169,7 @@ class _NewExpenseState extends State<NewExpense> {
                       : Colors.deepPurple,
                 ),
               ),
-              SizedBox(width: 10,),
+              SizedBox(width: 10),
               ElevatedButton.icon(
                 onPressed: () {
                   Navigator.pop(context);

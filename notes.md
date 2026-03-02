@@ -18,3 +18,15 @@ column might not be best widget if we have an unknown length of list items, scro
 - data types
 - object that wrap a value that we don't have yet but we will later
 - use async/await with these functions/values
+
+---
+
+Comparison operators & Logical operators are used to derive boolean values
+ - ==
+ - \>
+ - <
+ - \>=
+ - <=
+ - !=
+ - &&
+ - ||
