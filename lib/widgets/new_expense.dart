@@ -177,14 +177,14 @@ class _NewExpenseState extends State<NewExpense> {
                 },
                 icon: const Icon(Icons.check),
                 label: const Text('Save'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _isSaveHovering
-                      ? Colors.deepPurple
-                      : Colors.white,
-                  foregroundColor: _isSaveHovering
-                      ? Colors.white
-                      : Colors.deepPurple,
-                ),
+                // style: ElevatedButton.styleFrom(
+                //   backgroundColor: _isSaveHovering
+                //       ? Colors.deepPurple
+                //       : Colors.white,
+                //   foregroundColor: _isSaveHovering
+                //       ? Colors.white
+                //       : Colors.deepPurple,
+                // ),
               ),
               SizedBox(width: 10),
               ElevatedButton.icon(
@@ -198,14 +198,14 @@ class _NewExpenseState extends State<NewExpense> {
                 },
                 icon: const Icon(Icons.close),
                 label: const Text('Cancel'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _isHovering
-                      ? Colors.deepPurple
-                      : Colors.white,
-                  foregroundColor: _isHovering
-                      ? Colors.white
-                      : Colors.deepPurple,
-                ),
+                // style: ElevatedButton.styleFrom(
+                //   backgroundColor: _isHovering
+                //       ? Colors.deepPurple
+                //       : Colors.white,
+                //   foregroundColor: _isHovering
+                //       ? Colors.white
+                //       : Colors.deepPurple,
+                // ),
               ),
               // ),
               SizedBox(width: 8),
