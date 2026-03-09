@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:expense_tracker/models/expense.dart';
+import 'package:expense_tracker/widgets/chart/chart.dart';
 import 'package:expense_tracker/widgets/expenses_list/expense_list.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,8 @@ class _ExpensesState extends State<Expenses> {
   //dummy data
   final List<Expense> _ExpenseList = [
     Expense(
-      title: 'Trip to Ireland',
-      amount: 1326.45,
+      title: 'Hotel',
+      amount: 125.99,
       expenseDate: DateTime.now(),
       category: Category.travel,
     ),
@@ -98,7 +99,8 @@ class _ExpensesState extends State<Expenses> {
       body: Center(
         child: Column(
           children: [
-            Text('The Chart'),
+            // Text('The Chart'),
+            Chart(expenses: _ExpenseList),
             Expanded(child: mainContent),
           ],
         ),

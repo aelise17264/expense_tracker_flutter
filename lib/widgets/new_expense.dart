@@ -132,11 +132,14 @@ class _NewExpenseState extends State<NewExpense> {
                       _selectedDate == null
                           ? 'No Date Selected'
                           : formatter.format(_selectedDate!),
-                          style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     IconButton(
                       onPressed: _getThisDate,
-                      icon: Icon(Icons.calendar_month, color: Theme.of(context).iconTheme.color,),
+                      icon: Icon(
+                        Icons.calendar_month,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
                     ),
                   ],
                 ),
@@ -154,8 +157,10 @@ class _NewExpenseState extends State<NewExpense> {
                     .map(
                       (category) => DropdownMenuItem(
                         value: category,
-                        child: Text(category.name.toUpperCase(), style: Theme.of(context).textTheme.bodyMedium,),
-                        
+                        child: Text(
+                          category.name.toUpperCase(),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                     )
                     .toList(),
