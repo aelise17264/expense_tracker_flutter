@@ -99,6 +99,7 @@ class _NewExpenseState extends State<NewExpense> {
             maxLength: 50,
             decoration: InputDecoration(label: Text('Title')),
             controller: _titleController,
+            style: Theme.of(context).textTheme.bodyMedium,
             //using this controller makes it so we don't have to manually store the value, Flutter does it for us!
             // onChanged: _saveTitleInput,
           ),
@@ -112,6 +113,7 @@ class _NewExpenseState extends State<NewExpense> {
                     labelText: 'Amount',
                     prefixText: '\$ ',
                   ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   controller: _priceInput,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
@@ -130,10 +132,11 @@ class _NewExpenseState extends State<NewExpense> {
                       _selectedDate == null
                           ? 'No Date Selected'
                           : formatter.format(_selectedDate!),
+                          style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     IconButton(
                       onPressed: _getThisDate,
-                      icon: const Icon(Icons.calendar_month),
+                      icon: Icon(Icons.calendar_month, color: Theme.of(context).iconTheme.color,),
                     ),
                   ],
                 ),
@@ -151,7 +154,8 @@ class _NewExpenseState extends State<NewExpense> {
                     .map(
                       (category) => DropdownMenuItem(
                         value: category,
-                        child: Text(category.name.toUpperCase()),
+                        child: Text(category.name.toUpperCase(), style: Theme.of(context).textTheme.bodyMedium,),
+                        
                       ),
                     )
                     .toList(),
