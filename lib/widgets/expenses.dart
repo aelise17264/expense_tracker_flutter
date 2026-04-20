@@ -74,6 +74,9 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+
     Widget mainContent = const Center(
       child: Text("Start adding your expenses!"),
     );
@@ -96,7 +99,7 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: Center(
+      body: screenWidth < 600 ? Center(
         child: Column(
           children: [
             // Text('The Chart'),
@@ -104,7 +107,10 @@ class _ExpensesState extends State<Expenses> {
             Expanded(child: mainContent),
           ],
         ),
-      ),
+      ) : Row(children: [
+            Expanded(child: Chart(expenses: _ExpenseList)),
+            Expanded(child: mainContent),
+          ],),
     );
   }
 }
