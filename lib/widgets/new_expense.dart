@@ -90,145 +90,310 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-   final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
-    return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsetsGeometry.fromLTRB(16, 48, 16, keyboardSpace + 16),
-          child: Column(
-            //instead of ListView because we don't need scrollability & we have a set number of elements
-            children: [
-              TextField(
-                maxLength: 50,
-                decoration: InputDecoration(label: Text('Title')),
-                controller: _titleController,
-                style: Theme.of(context).textTheme.bodyMedium,
-                //using this controller makes it so we don't have to manually store the value, Flutter does it for us!
-                // onChanged: _saveTitleInput,
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    return LayoutBuilder(
+      builder: (cxt, constraints) {
+        final fullWidth = constraints.maxWidth;
+
+        return SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsetsGeometry.fromLTRB(
+                16,
+                48,
+                16,
+                keyboardSpace + 16,
               ),
-              SizedBox(height: 10),
-              Row(
+              child: Column(
+                //instead of ListView because we don't need scrollability & we have a set number of elements
                 children: [
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        labelText: 'Amount',
-                        prefixText: '\$ ',
-                      ),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      controller: _priceInput,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d+\.?\d{0,2}'),
+                  if (fullWidth >= 600)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            maxLength: 50,
+                            decoration: InputDecoration(label: Text('Title')),
+                            controller: _titleController,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            //using this controller makes it so we don't have to manually store the value, Flutter does it for us!
+                            // onChanged: _saveTitleInput,
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            decoration: InputDecoration(
+                              labelText: 'Amount',
+                              prefixText: '\$ ',
+                            ),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            controller: _priceInput,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,2}'),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
+                    )
+                  else
+                    TextField(
+                      maxLength: 50,
+                      decoration: InputDecoration(label: Text('Title')),
+                      controller: _titleController,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      //using this controller makes it so we don't have to manually store the value, Flutter does it for us!
+                      // onChanged: _saveTitleInput,
                     ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                  SizedBox(height: 10),
+                  if (fullWidth >= 600)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Spacer(),
-                        Text(
-                          _selectedDate == null
-                              ? 'No Date Selected'
-                              : formatter.format(_selectedDate!),
-                          style: Theme.of(context).textTheme.bodyMedium,
+                        SizedBox(width: 20),
+                        DropdownButton(
+                          value: _selectedCategory,
+                          items: Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(
+                                    category.name.toUpperCase(),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              if (value == null) {
+                                return;
+                              } else {
+                                _selectedCategory = value;
+                              }
+                            });
+                          },
                         ),
-                        IconButton(
-                          onPressed: _getThisDate,
-                          icon: Icon(
-                            Icons.calendar_month,
-                            color: Theme.of(context).iconTheme.color,
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              // Spacer(),
+                              Text(
+                                _selectedDate == null
+                                    ? 'No Date Selected'
+                                    : formatter.format(_selectedDate!),
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              IconButton(
+                                onPressed: _getThisDate,
+                                icon: Icon(
+                                  Icons.calendar_month,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        // Spacer(),
+                        SizedBox(width: 20),
+                      ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            decoration: InputDecoration(
+                              labelText: 'Amount',
+                              prefixText: '\$ ',
+                            ),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            controller: _priceInput,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,2}'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        // Expanded(
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.end,
+                        //     children: [
+                        //       // Spacer(),
+                        //       Text(
+                        //         _selectedDate == null
+                        //             ? 'No Date Selected'
+                        //             : formatter.format(_selectedDate!),
+                        //         style: Theme.of(context).textTheme.bodyMedium,
+                        //       ),
+                        //       IconButton(
+                        //         onPressed: _getThisDate,
+                        //         icon: Icon(
+                        //           Icons.calendar_month,
+                        //           color: Theme.of(context).iconTheme.color,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  SizedBox(height: 10),
+                  if (fullWidth >= 600)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // SizedBox(width: 250,),
+                        Spacer(),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            _submitData();
+                          },
+                          onHover: (value) {
+                            setState(() {
+                              _isSaveHovering = value;
+                            });
+                          },
+                          icon: const Icon(Icons.check),
+                          label: const Text('Save'),
+                        ),
+                        SizedBox(width: 36),
+                        // Spacer(),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          onHover: (value) {
+                            setState(() {
+                              _isHovering = value;
+                            });
+                          },
+                          icon: const Icon(Icons.close),
+                          label: const Text('Cancel'),
+                        ),
+                        Spacer(),
+                      ],
+                    )
+                  // Spacer(),
+                  else
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Spacer(),
+                                  Text(
+                                    _selectedDate == null
+                                        ? 'No Date Selected'
+                                        : formatter.format(_selectedDate!),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
+                                  ),
+                                  IconButton(
+                                    onPressed: _getThisDate,
+                                    icon: Icon(
+                                      Icons.calendar_month,
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 16),
+                            DropdownButton(
+                              value: _selectedCategory,
+                              items: Category.values
+                                  .map(
+                                    (category) => DropdownMenuItem(
+                                      value: category,
+                                      child: Text(
+                                        category.name.toUpperCase(),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value == null) {
+                                    return;
+                                  } else {
+                                    _selectedCategory = value;
+                                  }
+                                });
+                              },
+                            ),
+
+                            SizedBox(width: 10),
+                          ],
+                        ),
+
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Spacer(),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                _submitData();
+                              },
+                              onHover: (value) {
+                                setState(() {
+                                  _isSaveHovering = value;
+                                });
+                              },
+                              icon: const Icon(Icons.check),
+                              label: const Text('Save'),
+                            ),
+                            SizedBox(width: 10),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              onHover: (value) {
+                                setState(() {
+                                  _isHovering = value;
+                                });
+                              },
+                              icon: const Icon(Icons.close),
+                              label: const Text('Cancel'),
+                            ),
+                            // ),
+                            SizedBox(width: 8),
+                          ],
                         ),
                       ],
                     ),
-                  ),
                 ],
               ),
-              SizedBox(height: 10),
-              // Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  DropdownButton(
-                    value: _selectedCategory,
-                    items: Category.values
-                        .map(
-                          (category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(
-                              category.name.toUpperCase(),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value == null) {
-                          return;
-                        } else {
-                          _selectedCategory = value;
-                        }
-                      });
-                    },
-                  ),
-                  Spacer(),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      _submitData();
-                    },
-                    onHover: (value) {
-                      setState(() {
-                        _isSaveHovering = value;
-                      });
-                    },
-                    icon: const Icon(Icons.check),
-                    label: const Text('Save'),
-                    // style: ElevatedButton.styleFrom(
-                    //   backgroundColor: _isSaveHovering
-                    //       ? Colors.deepPurple
-                    //       : Colors.white,
-                    //   foregroundColor: _isSaveHovering
-                    //       ? Colors.white
-                    //       : Colors.deepPurple,
-                    // ),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    onHover: (value) {
-                      setState(() {
-                        _isHovering = value;
-                      });
-                    },
-                    icon: const Icon(Icons.close),
-                    label: const Text('Cancel'),
-                    // style: ElevatedButton.styleFrom(
-                    //   backgroundColor: _isHovering
-                    //       ? Colors.deepPurple
-                    //       : Colors.white,
-                    //   foregroundColor: _isHovering
-                    //       ? Colors.white
-                    //       : Colors.deepPurple,
-                    // ),
-                  ),
-                  // ),
-                  SizedBox(width: 8),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
