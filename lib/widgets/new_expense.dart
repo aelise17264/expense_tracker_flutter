@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:expense_tracker/models/expense.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:intl/intl.dart';
@@ -50,16 +53,24 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
-  void _submitData() {
-    final enteredAmount = double.tryParse(_priceInput.text);
-    final invalidAmount = enteredAmount == null || enteredAmount <= 0;
-
-    if (_titleController.text.trim().isEmpty ||
-        invalidAmount ||
-        _selectedDate == null) {
-      // throw ErrorDescription(
-      //   "Input Error: Check your expense title, date and amount. Something isn't right.",
-      // );
+  void _formatDialog() {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: Text('Input Error'),
+          content: Text('Check your expense title, date and amount.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('Got it!'),
+            ),
+          ],
+        ),
+      );
+    } else {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -75,6 +86,21 @@ class _NewExpenseState extends State<NewExpense> {
           ],
         ),
       );
+    }
+  }
+
+  void _submitData() {
+    final enteredAmount = double.tryParse(_priceInput.text);
+    final invalidAmount = enteredAmount == null || enteredAmount <= 0;
+
+    if (_titleController.text.trim().isEmpty ||
+        invalidAmount ||
+        _selectedDate == null) {
+      _formatDialog();
+      // throw ErrorDescription(
+      //   "Input Error: Check your expense title, date and amount. Something isn't right.",
+      // );
+
       return;
     }
     widget.onAddExpense(
